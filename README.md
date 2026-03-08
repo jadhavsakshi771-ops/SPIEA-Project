@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SPIEA — Smart Placement Intelligence & Employability Analyzer
 
 SPIEA is a Flask-based web application that helps students evaluate their **placement readiness** using academic metrics and resume-based skill analysis.
