@@ -120,10 +120,17 @@ This project is developed for **educational and demonstration purposes**.
 ## 👩‍💻 Author
 
 Developed by **Sakshi Jadhav**
-=======
-# SPIEA-Project
-Smart Platform for Intelligent Educational Assistance (SPIEA) - A web-based system designed to help students with learning resources and assistance
->>>>>>> a704bffc884c0770fa677ba62065fa6118e45658
+
+✅ This version:  
+- Resolves all Git merge conflicts  
+- Includes **Render deployment instructions**  
+- Clear, professional, and ready for GitHub  
+
+---
+
+If you want, I can also give you a **clean `requirements.txt` and `.gitignore`** ready to paste, so your Render deployment won’t fail.  
+
+Do you want me to do that next?
 
 ## Deployment
 
