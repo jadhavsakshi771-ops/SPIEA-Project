@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">AI Placement Prediction Dashboard</h2>
+
+<div class="row">
+
+<!-- LEFT SIDE FORM -->
+<div class="col-md-4">
+
+<div class="card-ui">
+
+<h4 class="mb-3">Student Analysis</h4>
+
+<form method="POST" enctype="multipart/form-data">
+
+<input class="form-control mb-3" name="name" placeholder="Student Name" required>
+
+<input class="form-control mb-3" name="cgpa" placeholder="CGPA (0-10)" required>
+
+<input class="form-control mb-3" name="skills" placeholder="Skill Score (1-10)" required>
+
+<label class="mb-2">Upload Resume (PDF)</label>
+
+<input type="file" class="form-control mb-3" name="resume" accept=".pdf">
+
+<button class="btn btn-primary w-100">Analyze</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- RIGHT SIDE RESULTS -->
+<div class="col-md-8">
+
+<div class="card-ui">
+
+<h4>Student Analysis Results</h4>
+
+<table class="table table-dark table-striped mt-3">
+
+<thead>
+<tr>
+<th>Name</th>
+<th>CGPA</th>
+<th>Skills</th>
+<th>Score</th>
+<th>Prediction</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% if records %}
+
+{% for r in records %}
+
+<tr>
+<td>{{ r["name"] }}</td>
+<td>{{ r["cgpa"] }}</td>
+<td>{{ r["skills"] }}</td>
+<td>{{ r["score"] }}</td>
+<td>{{ r["prediction"] }}</td>
+</tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+<td colspan="5" class="text-center">No analysis yet</td>
+</tr>
+
+{% endif %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CHART DASHBOARD -->
+<div class="row mt-4">
+
+<div class="col-md-4">
+<div class="card-ui text-center">
+
+<h5>Placement Probability</h5>
+
+<canvas id="gaugeChart" height="180"></canvas>
+
+{% if records %}
+{% set last = records[-1] %}
+<p class="mt-2"><b>{{ last["score"] }}% Ready</b></p>
+{% endif %}
+
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card-ui text-center">
+
+<h5>Placement Score Analytics</h5>
+
+<canvas id="scoreChart" height="180"></canvas>
+
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card-ui text-center">
+
+<h5>Skill Strength</h5>
+
+<canvas id="skillRadar" height="180"></canvas>
+
+</div>
+</div>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+var scores = [];
+var names = [];
+var skills = [];
+
+{% for r in records %}
+scores.push({{ r["score"]|int }});
+names.push("{{ r['name'] }}");
+skills.push({{ r["skills"]|int }});
+{% endfor %}
+
+var lastScore = 0;
+
+{% if records %}
+lastScore = {{ records[-1]["score"]|int }};
+{% endif %}
+
+
+/* BAR CHART */
+
+var ctx = document.getElementById("scoreChart");
+
+if(ctx){
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+labels:names,
+datasets:[{
+label:"Placement Score",
+data:scores
+}]
+},
+
+options:{
+responsive:true,
+scales:{
+y:{
+beginAtZero:true,
+max:100
+}
+}
+}
+
+});
+
+}
+
+
+/* GAUGE CHART */
+
+var gauge = document.getElementById("gaugeChart");
+
+if(gauge){
+
+new Chart(gauge,{
+
+type:"doughnut",
+
+data:{
+datasets:[{
+data:[lastScore,100-lastScore]
+}]
+},
+
+options:{
+rotation:-90,
+circumference:180,
+plugins:{
+legend:{display:false}
+}
+}
+
+});
+
+}
+
+
+/* RADAR CHART */
+
+var radar = document.getElementById("skillRadar");
+
+if(radar){
+
+new Chart(radar,{
+
+type:"radar",
+
+data:{
+labels:["Technical Skills","Communication","Problem Solving","Projects","Experience"],
+datasets:[{
+label:"Skill Strength",
+data:[
+skills.length ? skills[skills.length-1] : 0,
+6,
+7,
+5,
+4
+]
+}]
+},
+
+options:{
+responsive:true,
+scales:{
+r:{
+min:0,
+max:10
+}
+}
+}
+
+});
+
+}
+
+</script>
+
+{% endblock %}
