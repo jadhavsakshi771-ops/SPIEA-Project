@@ -125,3 +125,8 @@ Developed by **Sakshi Jadhav**
 # SPIEA-Project
 Smart Platform for Intelligent Educational Assistance (SPIEA) - A web-based system designed to help students with learning resources and assistance
 >>>>>>> a704bffc884c0770fa677ba62065fa6118e45658
+
+## Deployment
+
+- Ready for **Render.com free deployment**
+- Environment variable: SECRET_KEY=spiea_secret_key
